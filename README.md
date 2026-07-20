@@ -4,6 +4,8 @@
 
 このリポジトリに画像、抽出済みセリフ、人物名簿、gold、APIレスポンスは含まれません。入力画像とGemini APIキーは利用者が用意してください。
 
+本書で作った検索システムの公開版は、[yuyusearch.subcatalog.net](https://yuyusearch.subcatalog.net/)で動かしています。実作品については、検索結果の巻・頁・コマ番号だけを返し、セリフ本文・話者名・画像は返しません。
+
 ## できること
 
 ```text
@@ -22,6 +24,8 @@
 - 公開用に本文と画像をAPI段階で隠すモード
 
 現在のVLM接続はGeminiです。モデルIDは固定せず、`.env`または`--model`で指定します。
+API呼び出しは既定で5分のtimeoutと最大3回の試行を設定しています。必要なら
+`GEMINI_TIMEOUT_MS`と`GEMINI_RETRY_ATTEMPTS`で変更できます。
 
 ## セットアップ
 

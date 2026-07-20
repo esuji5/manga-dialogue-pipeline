@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 from manga_dialogue_pipeline.extract import extract_images
-from manga_dialogue_pipeline.gemini import StructuredResult
+from manga_dialogue_pipeline.gemini import StructuredResult, _http_options
 from manga_dialogue_pipeline.index import build_index
 from manga_dialogue_pipeline.io import load_roster, write_json
 from manga_dialogue_pipeline.schema import (
@@ -73,6 +73,23 @@ class FakeEngine:
         else:
             raise AssertionError(response_model)
         return StructuredResult(value=value, model=self.model, latency_sec=0.01, usage={})
+
+
+def test_gemini_http_options_have_bounded_retries(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("GEMINI_TIMEOUT_MS", "123456")
+    monkeypatch.setenv("GEMINI_RETRY_ATTEMPTS", "4")
+    options = _http_options()
+    assert options.timeout == 123456
+    assert options.retry_options is not None
+    assert options.retry_options.attempts == 4
+
+
+def test_gemini_http_options_reject_invalid_values(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("GEMINI_TIMEOUT_MS", "0")
+    with pytest.raises(RuntimeError, match="GEMINI_TIMEOUT_MS"):
+        _http_options()
 
 
 def test_bbox_rejects_reversed_edges() -> None:

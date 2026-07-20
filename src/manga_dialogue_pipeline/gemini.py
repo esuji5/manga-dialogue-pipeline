@@ -14,6 +14,34 @@ from pydantic import BaseModel
 T = TypeVar("T", bound=BaseModel)
 
 
+def _positive_env_int(name: str, default: int) -> int:
+    raw = os.environ.get(name)
+    if raw is None:
+        return default
+    try:
+        value = int(raw)
+    except ValueError as exc:
+        raise RuntimeError(f"{name} must be an integer.") from exc
+    if value < 1:
+        raise RuntimeError(f"{name} must be at least 1.")
+    return value
+
+
+def _http_options():
+    from google.genai import types
+
+    return types.HttpOptions(
+        timeout=_positive_env_int("GEMINI_TIMEOUT_MS", 300_000),
+        retry_options=types.HttpRetryOptions(
+            attempts=_positive_env_int("GEMINI_RETRY_ATTEMPTS", 3),
+            initial_delay=1.0,
+            max_delay=8.0,
+            exp_base=2.0,
+            jitter=0.2,
+        ),
+    )
+
+
 @dataclass
 class StructuredResult(Generic[T]):
     value: T
@@ -34,7 +62,7 @@ class GeminiEngine:
         self.model = model or os.environ.get("GEMINI_MODEL")
         if not self.model:
             raise RuntimeError("Set GEMINI_MODEL in .env or pass --model.")
-        self.client = genai.Client(api_key=api_key)
+        self.client = genai.Client(api_key=api_key, http_options=_http_options())
 
     def generate(
         self,
