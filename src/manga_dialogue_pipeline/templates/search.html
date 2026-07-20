@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:,">
+<title>マンガのセリフ検索</title>
+<style>
+:root{--paper:#f7f4ec;--surface:#fffdf8;--ink:#20251e;--muted:#687064;--line:#d9dfd2;--green:#4d8d37;--dark:#316c24;--soft:#eaf3e5;--shadow:0 14px 36px rgba(54,64,43,.10)}
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic UI",sans-serif}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 12% -5%,rgba(115,159,85,.14),transparent 30rem),linear-gradient(180deg,#fbfaf5 0,var(--paper) 26rem)}
+button,input{font:inherit}.shell{width:min(1120px,calc(100% - 32px));margin:auto;padding:34px 0 70px}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:24px}.eyebrow{margin:0 0 7px;color:var(--dark);font-size:12px;font-weight:750;letter-spacing:.12em}
+h1{margin:0;font-size:clamp(27px,5vw,45px);line-height:1.08;letter-spacing:-.035em}.lede{margin:10px 0 0;color:var(--muted);font-size:14px}
+.mode{padding:7px 11px;border:1px solid var(--line);border-radius:999px;background:#ffffffa6;color:var(--muted);font-size:12px;white-space:nowrap}
+.search-panel{position:sticky;top:12px;z-index:10;padding:15px;border:1px solid var(--line);border-radius:18px;background:#fffdf8f0;box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+.query-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px}.query{width:100%;height:51px;padding:0 17px;border:1.5px solid #cbd4c4;border-radius:12px;background:#fff;font-size:17px;outline:none}.query:focus{border-color:var(--green);box-shadow:0 0 0 3px #4d8d371f}
+.search-button{height:51px;padding:0 24px;border:0;border-radius:12px;background:var(--green);color:#fff;font-weight:750;cursor:pointer}.search-button:hover{background:var(--dark)}.search-button:disabled{opacity:.55;cursor:wait}
+.filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:11px}.label{color:var(--muted);font-size:12px}.works{display:flex;gap:6px;flex-wrap:wrap}
+.chip{min-height:32px;padding:5px 11px;border:1px solid var(--line);border-radius:999px;background:#fff;color:#475045;font-size:12px;cursor:pointer}.chip[aria-pressed=true]{border-color:var(--green);background:var(--soft);color:var(--dark);font-weight:700}
+.speaker{width:150px;height:32px;padding:0 10px;border:1px solid var(--line);border-radius:9px;background:#fff;font-size:12px;outline:none}.check{display:flex;align-items:center;gap:6px;color:#50594d;font-size:12px;cursor:pointer}.check input{accent-color:var(--green)}
+.status{display:flex;justify-content:space-between;gap:14px;min-height:49px;padding:17px 2px 8px;color:var(--muted);font-size:13px}.count{color:var(--ink);font-weight:700}.results{display:grid;gap:13px}
+.card{display:grid;grid-template-columns:260px minmax(0,1fr);overflow:hidden;border:1px solid var(--line);border-radius:16px;background:var(--surface);box-shadow:0 5px 18px rgba(54,64,43,.055)}.thumb-wrap{min-height:145px;display:grid;place-items:center;overflow:hidden;background:#e9eadf;border-right:1px solid var(--line)}.thumb{display:block;width:100%;height:auto}.fallback{color:#91998c;font-size:12px}
+.body{min-width:0;padding:15px 17px}.locator{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:10px}.work{padding:3px 8px;border-radius:6px;background:var(--ink);color:#fff;font-size:11px;font-weight:750}.page{font-size:15px;font-weight:750}.page-id{color:var(--muted);font-size:11px}
+.dialogues{display:grid;gap:7px}.dialogue{display:grid;grid-template-columns:minmax(88px,auto) minmax(0,1fr);gap:11px;align-items:start;padding-top:7px;border-top:1px solid #e7eadf}.speaker-name{color:var(--dark);font-size:12px;font-weight:750}.text{font-size:15px;line-height:1.65;white-space:pre-wrap;word-break:break-word}.badge{padding:2px 6px;border-radius:999px;background:#eee;color:#676767;font-size:10px}.off{background:#f5ead9;color:#98601c}
+mark{padding:0 .1em;border-radius:2px;background:#ffe995;color:inherit}.redacted{padding:8px 0 3px;color:var(--muted);font-size:13px}.empty{padding:72px 20px;border:1px dashed #cdd3c7;border-radius:16px;text-align:center;color:var(--muted)}.empty strong{display:block;margin-bottom:7px;color:#434a40;font-size:16px}.error{padding:18px;border:1px solid #e0bebe;border-radius:12px;background:#fff2f2;color:#8a3333}.foot{margin-top:22px;color:#8a9186;font-size:11px;line-height:1.7}
+@media(max-width:720px){.shell{width:min(100% - 20px,1120px);padding-top:22px}.head{align-items:flex-start;flex-direction:column}.search-panel{top:6px;padding:10px;border-radius:14px}.query-row{grid-template-columns:1fr}.search-button{height:43px}.card{grid-template-columns:1fr}.thumb-wrap{border-right:0;border-bottom:1px solid var(--line)}.dialogue{grid-template-columns:1fr;gap:2px}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header class="head"><div><p class="eyebrow">MANGA DIALOGUE INDEX</p><h1>マンガのセリフ検索</h1><p class="lede">セリフと話者から、巻・頁・コマへ戻るローカル検索です。</p></div><span id="mode" class="mode">読み込み中</span></header>
+<section class="search-panel" aria-label="検索条件">
+  <div class="query-row"><input id="query" class="query" type="search" placeholder="覚えている言葉を入力" autocomplete="off" autofocus><button id="search" class="search-button" type="button">検索する</button></div>
+  <div class="filters"><span class="label">work</span><div id="works" class="works"></div><span class="label">話者</span><input id="speaker" class="speaker" list="speakers" placeholder="人物名"><datalist id="speakers"></datalist><label class="check"><input id="exclude" type="checkbox"> unknownを除く</label></div>
+</section>
+<div class="status"><span id="status">検索語を入力してください</span><span id="mode-note"></span></div>
+<section id="results" class="results" aria-live="polite"><div class="empty"><strong>あのセリフは、どこだっけ。</strong>覚えている言葉を入力してください。</div></section>
+<p class="foot">話者名は推定ラベルです。公開モードでは、許可したwork以外の本文と画像をAPIから返しません。</p>
+</main>
+<script>
+const state={works:new Set(),loading:false};const $=id=>document.getElementById(id);const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+async function config(){const r=await fetch("/api/config"),d=await r.json();$("mode").textContent=d.mode==="public"?"公開モード":"ローカルモード";$("mode-note").textContent=d.mode==="public"?"許可外は場所のみ":"本文・画像を表示";$("works").innerHTML=d.works.map(w=>`<button class="chip" type="button" data-work="${esc(w.work_id)}" aria-pressed="false">${esc(w.display_name)}</button>`).join("");$("speakers").innerHTML=d.speakers.map(s=>`<option value="${esc(s)}"></option>`).join("");document.querySelectorAll("[data-work]").forEach(b=>b.addEventListener("click",()=>{state.works.has(b.dataset.work)?state.works.delete(b.dataset.work):state.works.add(b.dataset.work);b.setAttribute("aria-pressed",String(state.works.has(b.dataset.work)))}));restore()}
+function restore(){const p=new URLSearchParams(location.search);$("query").value=p.get("q")||"";$("speaker").value=p.get("speaker")||"";$("exclude").checked=p.get("exclude_unknown")==="1";p.getAll("work").forEach(w=>state.works.add(w));document.querySelectorAll("[data-work]").forEach(b=>b.setAttribute("aria-pressed",String(state.works.has(b.dataset.work))));if($("query").value||$("speaker").value||state.works.size)search()}
+function params(){const p=new URLSearchParams(),q=$("query").value.trim(),s=$("speaker").value.trim();if(q)p.set("q",q);if(s)p.set("speaker",s);[...state.works].sort().forEach(w=>p.append("work",w));if($("exclude").checked)p.set("exclude_unknown","1");p.set("limit","80");return p}
+async function search(){if(state.loading)return;const p=params();if(!p.get("q")&&!p.get("speaker")&&!p.get("work")){$("status").textContent="検索語か絞り込みを指定してください";return}state.loading=true;$("search").disabled=true;$("status").textContent="検索中…";try{const r=await fetch("/api/search?"+p),d=await r.json();if(!r.ok||d.error)throw new Error(d.error||`HTTP ${r.status}`);history.replaceState(null,"","?"+p);render(d,p.get("q")||"")}catch(e){$("status").textContent="検索できませんでした";$("results").innerHTML=`<div class="error">${esc(e.message)}</div>`}finally{state.loading=false;$("search").disabled=false}}
+function render(d,q){$("status").innerHTML=`<span class="count">${d.total_panels} コマ</span>${d.truncated?"（先頭80コマ）":""}`;if(!d.panels.length){$("results").innerHTML='<div class="empty"><strong>該当なし</strong>検索語や絞り込みを変えてください。</div>';return}$("results").innerHTML=d.panels.map(p=>card(p,q)).join("");thumbs()}
+function card(p,q){const page=p.display_page!=null?`p.${p.display_page}`:p.page_id,loc=`<div class="locator"><span class="work">${esc(p.work_id)}</span><span class="page">${esc(page)}・${esc(p.panel_id)}コマ目</span><span class="page-id">${esc(p.page_id)}</span></div>`;if(!p.content_visible)return `<article class="card"><div class="body" style="grid-column:1/-1">${loc}<div class="redacted">一致しました。公開用の結果では本文と画像を表示しません。</div></div></article>`;const bbox=p.panel_bbox?esc(JSON.stringify(p.panel_bbox)):"",thumb=p.image_url&&bbox?`<canvas class="thumb" data-src="${esc(p.image_url)}" data-bbox="${bbox}"></canvas>`:'<span class="fallback">画像なし</span>',ds=p.dialogues.map(d=>{const off=d.speaker_scope==="off_panel"?'<span class="badge off">画面外</span>':"",unknown=d.speaker_status==="unknown"?'<span class="badge">unknown</span>':"";return `<div class="dialogue"><div class="speaker-name">${esc(d.speaker||"unknown")} ${off}${unknown}</div><div class="text">${highlight(d.text,q)}</div></div>`}).join("");return `<article class="card"><div class="thumb-wrap">${thumb}</div><div class="body">${loc}<div class="dialogues">${ds}</div></div></article>`}
+function highlight(t,q){const safe=esc(t);return q?safe.split(esc(q)).join(`<mark>${esc(q)}</mark>`):safe}
+const cache=new Map();function image(src){if(cache.has(src))return cache.get(src);const p=new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=no;i.src=src});cache.set(src,p);return p}
+async function thumbs(){for(const c of document.querySelectorAll("canvas[data-src]"))try{const i=await image(c.dataset.src),b=JSON.parse(c.dataset.bbox),sx=i.naturalWidth/1000,sy=i.naturalHeight/1000,x=b.xmin*sx,y=b.ymin*sy,w=(b.xmax-b.xmin)*sx,h=(b.ymax-b.ymin)*sy,dw=520,dh=Math.max(130,Math.round(dw*h/w));c.width=dw;c.height=dh;c.getContext("2d").drawImage(i,x,y,w,h,0,0,dw,dh)}catch{c.replaceWith(Object.assign(document.createElement("span"),{className:"fallback",textContent:"画像を読めません"}))}}
+$("search").addEventListener("click",search);$("query").addEventListener("keydown",e=>{if(e.key==="Enter")search()});$("speaker").addEventListener("keydown",e=>{if(e.key==="Enter")search()});config().catch(e=>{$("results").innerHTML=`<div class="error">${esc(e.message)}</div>`});
+</script>
+</body>
+</html>

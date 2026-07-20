@@ -1,0 +1,25 @@
+.env
+.DS_Store
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# User-provided images and generated data must never be committed.
+images/
+data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Credentials
+*.pem
+*.key
+*service-account*.json
+*credentials*.json

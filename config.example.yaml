@@ -1,0 +1,7 @@
+# Optional character roster used by the speaker-linking step.
+# Replace these fictional examples with the characters in your own images.
+characters:
+  - name: ハル
+    description: 明るい髪のショート。元気で声が大きい。
+  - name: シオリ
+    description: 黒髪ロング。落ち着いた話し方。
